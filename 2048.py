@@ -12,28 +12,18 @@ table = [[" "," "," "," "],
 
 
 def printTable(table):
-    
-    for rows in table:
-        for numbers in rows:
-        
-            max=0
-            if numbers==" ":
-                continue
-            if numbers>max:
-                max=numbers
-        
+    print("\n")
+    print("\n")
+    print("\n")
+   
     #for i in range(10):
      #   print("\n")
-     
+    4
     for rows in table:
-        spaceNumber=len(str(max))
-        print("+",end="")
-        for i in range(4):
-            
-            print("-"*(spaceNumber+2)+"+",end="")
-            print("\n")
+       
+        print("+------+------+------+------+")
         for elements in rows:
-            format = str(elements).center(len(str(elements))+2)
+            format = str(elements).center(6)
             print("|"+format,end="")
         if elements == rows[3]:
             print("|")
@@ -41,7 +31,7 @@ def printTable(table):
         
         
     if rows == table[3]:
-        print("+---+---+---+---+")
+        print("+------+------+------+------+")
         
         
         
@@ -60,12 +50,14 @@ def newNumber(table):
                 
                 numbers[str(n)]=list2
                 n+=1
-                
-    random_choice =random.choice(list(numbers.keys()))
-    
-    new_number_row,new_number_column=numbers[random_choice]
-    
-    table[new_number_row][new_number_column]=2
+    try:
+        random_choice =random.choice(list(numbers.keys()))
+        
+        new_number_row,new_number_column=numbers[random_choice]
+        
+        table[new_number_row][new_number_column]=2
+    except:
+        pass
 def tableControl(new_list):
     for elements in new_list:
         if not elements==" ":
@@ -123,7 +115,7 @@ def operation(player_move):
                         break
     
                     
-                     
+
                         
 def spaceSkip(player_move):
     if player_move=="a":
@@ -177,22 +169,45 @@ def spaceSkip(player_move):
                         table[3-i+space][j]=table[3-i][j]
                         table[3-i][j]=" "
     
-                    
+
                         
     
                     
-def gameOverCondition():
+def gameOverCondition(table):
+        
     for i in range(len(table)):
-        for j in range(len(table[0])):   
+        for j in range(len(table[0])):
             if table[i][j]==" ":
                 return False
-            if table[i][j]==table[i-1][j] or table[i][j]==table[i][j-1] or table[i][j]==table[i][j+1] or table[i][j]==table[i+1][j]:
+            
+            try:
+                first_con=table[i][j]==table[i-1][j]
+            except:
+                first_con=True
+            try:
+                second_con=table[i][j]==table[i][j-1]
+            except:
+                second_con=True
+            try:
+                third_con=table[i][j]==table[i][j+1]
+            except:
+                third_con=True
+            try:
+                fourth_con=table[i][j]==table[i+1][j]
+            except:
+                fourth_con=True
+                
+            
+
+                        
+            if first_con or second_con or third_con or fourth_con:
                 return False
     return True
     
         
 while True:
-    gameOverCondition()
+    
+    
     newNumber(table)
     printTable(table)
     with keyboard.Events() as events:
@@ -211,4 +226,6 @@ while True:
         time.sleep(0.4)
     operation(player_move)
     spaceSkip(player_move)
+    gameOverCondition(table)
+    
     
