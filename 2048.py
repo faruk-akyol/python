@@ -171,10 +171,34 @@ def spaceSkip(player_move):
     
 
                         
+def tableComp(last_table,present_table):
+    same_place=0
+    for i in range(len(last_table)):
+        for j in range(len(last_table)):
+            if last_table[i][j]==present_table[i][j]:
+                same_place+=1
+    if same_place==16:
+        return False
     
-                    
-def gameOverCondition(table):
+    return True
+     
+     
+def copyTable(table):
+    new_list=[]
+    
+    for k in range(len(table)):
+        newest_list=[]
+        new_list.append(newest_list)
         
+    for i in range(len(table)):
+        for j in range(len(table)):
+            new_list[i].append(table[i][j])
+            
+    return new_list
+                    
+def gameOverCondition(table,last_table):
+    if not tableComp(last_table,table):
+        return True
     for i in range(len(table)):
         for j in range(len(table[0])):
             if table[i][j]==" ":
@@ -204,10 +228,17 @@ def gameOverCondition(table):
                 return False
     return True
     
-        
+def gameScore(table):
+    max=0
+    for i in range(4):
+        for j in range(4):
+            if table[i][j]>max:
+                max=table[i][j]    
+                
+    return max
 while True:
     
-    
+    old_list=copyTable(table)
     newNumber(table)
     printTable(table)
     with keyboard.Events() as events:
@@ -222,10 +253,17 @@ while True:
             player_move="a"
         elif event.key == keyboard.KeyCode.from_char('d'):
             player_move="d"
+        else:
+            print("press w a s or d")
             
         time.sleep(0.4)
     operation(player_move)
     spaceSkip(player_move)
-    gameOverCondition(table)
+    condition=gameOverCondition(table,old_list)
+    if condition == True:
+        print("Game Over")
+        print("Your Score Is "+str(gameScore(table)))
+        break
+        
     
     
